@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">TourTravel</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
+              <li class="nav-item">
+                <a class="nav-link" href="/home">Book a package</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/mybooking">My Bookings</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/userprofile">Profile</a>
+              </li>
+              <li class="nav-item">
+                <form action="/signout" method="post">
+                  <button type="submit">LogOut</button>
+                </form>
+              </li>
+            
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="row">
+        <h1 class="heading1">Available Tours</h1>
+        <% if(userData.length!=0){ var i=1; userData.forEach(function(data){ %>
+        <div
+          class="col-lg-4 d-flex justify-content-center align-items-center flex-column"
+          style="margin-top: 20px"
+        >
+          <div class="card" style="width: 25rem">
+            <div class="card-body">
+              <h5 class="card-title"><%=data.name %></h5>
+              <p class="card-text"><%=data.TourID %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Destination: <%=data.destination %></li>
+              <li class="list-group-item">Agency: <%=data.agency %></li>
+              <li class="list-group-item">From: <%=data.datefrom %></li>
+              <li class="list-group-item">to: <%=data.dateto %></li>
+              <li class="list-group-item">Amount: <%=data.amount %></li>
+              <li class="list-group-item">Features: <%=data.features %></li>
+              <li class="list-group-item">Duration: <%=data.duration %></li>
+            </ul>
+            <div class="card-body">
+              <a href="/bookingform" class="btn btn-primary">Book Now</a>
+            </div>
+          </div>
+        </div>
+        <% i++; }) %> <% } else{ %>
+        <tr>
+          <td colspan="8">No bikes added</td>
+        </tr>
+        <% } %>
+      </div>
+     
+    <!-- <tr>
+      <td colspan="8">No bikes added</td>
+    </tr> -->
+   
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</body>
+</html>
