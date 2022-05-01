@@ -406,7 +406,7 @@ app.post("/booking", function (req, res, next) {
 		var msg = "Tour successfully added.";
 	  }
 	  console.log(msg);
-	  res.sendFile(path.join(__dirname + "/static/admindashboard.html"));
+	  res.redirect("/admindashboard");
 	});
   });
 
@@ -453,6 +453,7 @@ app.post("/booking", function (req, res, next) {
 		var sql = "INSERT INTO accounts SET ?";
 		connection.query(sql, inputData, function (err, data) {
 		  if (err) throw err;
+		  
 		});
 		var sql1 = "INSERT INTO user_profiles SET ?";
 		connection.query(sql1, inputData2, function (err, data) {
@@ -461,7 +462,7 @@ app.post("/booking", function (req, res, next) {
 		var msg = "Your are successfully registered";
 	  }
 	  console.log(msg);
-	  res.sendFile(path.join(__dirname + "/static/home.html"));
+	  res.sendFile(path.join(__dirname + "/static/login.html"));
 	});
   });
 
