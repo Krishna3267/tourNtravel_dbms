@@ -1,0 +1,8 @@
+express to start our server
+mysql
+dotenv this is where we'll create sensitive info like pass
+hbs handle sparse
+
+
+nodemon is a tool that helps develop node. js based applications by automatically restarting the node application when file changes in the 
+directory are detected

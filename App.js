@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',  
-	password : 'password',
+	password : 'kkyd1411',
 	database : 'nodesql'
 });
 
@@ -321,6 +321,7 @@ app.post('/auth3', function(request, response) {
 
 
 app.post("/booking", function (req, res, next) {
+	
 	inputData = {  
 		// first_name: req.body.first_name,
 		// last_name: req.body.last_name,
@@ -541,12 +542,13 @@ app.post("/booking", function (req, res, next) {
 	if (req.session.loggedin) {
 		// Output username
 		// response.send('Welcome back, ' + request.session.username + '!');
-		var sql = `SELECT * FROM bookings where name="${req.session.username}"`;
+	var sql = `SELECT * FROM bookings where name="${req.session.username}"`;
 	console.log(sql)
 	connection.query(sql, function (err, data, fields) {
 	  if (err) throw err;
 	  console.log(data);
 	  res.render("mybooking", { title: "User List", userData: data });
+
 		 
 	});
 
