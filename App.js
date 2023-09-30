@@ -1,22 +1,26 @@
-const mysql = require('mysql');
+//template begin
 const express = require('express');
 const session = require('express-session');
+const morgan = require('morgan')
 const path = require('path');
 const ejs = require("ejs");
 const app = express();
+const formRoutes = require('./routes/formRoutes.js')
+const authRoutes = require('./routes/authRoutes.js')
+const {connection} = require('./model/connection.js')
 // app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
-
+app.use(morgan('dev'));
 // app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/')));
 // app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')))
 // app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist')))
 
-const connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',  
-	password : 'kkyd1411',
-	database : 'nodesql'
-});
+// const connection = mysql.createConnection({
+// 	host     : 'localhost',
+// 	user     : 'root',  
+// 	password : 'kkyd1411',
+// 	database : 'nodesql'
+// });
 
 app.use(session({
 	secret: 'secret',
@@ -27,17 +31,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+//template end
 
 // setting routes
 app.get('/', function(request, response) {
 	// Render login template
-	response.sendFile(path.join(__dirname + '/static/getStarted.html'));
+	response.sendFile(path.join(__dirname + '/static/landing.html'));
 });
-
-// app.get('/home', function(request, response) {
-// 	// Render login template
-// 	response.sendFile(path.join(__dirname + '/static/home.html'));
-// });
 
 // http://localhost:3000/home kinda private route
 app.get('/home', function(request, response) {
@@ -60,6 +60,8 @@ app.get("/userinfo", function (request, response) {
 	  username: request.session.username,
 	});
   });
+
+  
  
   //user profile details
   app.get("/userprofile", function (req, res, next) {
@@ -78,32 +80,15 @@ app.get("/userinfo", function (request, response) {
 	});
   });
 
-    
-app.get("/userprofile", function (req, res, next) {
-	var sql = `SELECT * FROM user_profiles WHERE username="${req.session.username}"`;
-	connection.query(sql, function (err, data, fields) {
-	  if (err) throw err;
-	  res.render("userprofile", { title: "User List", userData: data });
-	});
-  });
 
 
+app.use('/form', formRoutes)
 
+app.use('/auth' , authRoutes)
 
-app.get('/bookingform', function(request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + '/static/bookingform.html'));
-});
-
-app.get('/addtour', function(request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + '/static/addtour.html'));
-});
-
-app.get('/deleteform', function(request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + '/static/deleteform.html'));
-});
+app.get('/login-admin' , (req , res) => {
+	res.sendFile(path.join(__dirname + '/static/login-admin.html'));
+})
 
 app.post("/delete", function (request, response) {
 	// Capture the input fields
@@ -123,10 +108,6 @@ app.post("/delete", function (request, response) {
 	});
   });
 
-app.get('/addadmin', function(request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + '/static/addadmin.html'));
-});
 
 app.get('/login', function(request, response) {
 	// Render login template
@@ -138,10 +119,6 @@ app.get("/register", function (request, response) {
 	response.sendFile(path.join(__dirname + "/static/register.html"));
   });
 
-app.get("/adminLogin", function (request, response) {
-// Render login template
-response.sendFile(path.join(__dirname + "/static/adminLogin.html"));
-});
 
   
 
@@ -237,89 +214,6 @@ app.get('/admindashboard', function(request, response) {
 	// response.end();
 });
 
-
-
-
-
-// http://localhost:3000/auth
-app.post('/auth', function(request, response) {
-	// Capture the input fields
-	let username = request.body.username;
-	let password = request.body.password;
-	// Ensure the input fields exists and are not empty
-	if (username && password) {
-		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			// If there is an issue with the query, output the error
-			if (error) throw error;
-			// If the account exists
-			if (results.length > 0) {
-				// Authenticate the user
-				request.session.loggedin = true;
-				request.session.username = username;
-				// Redirect to home page
-				response.redirect('/home');
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
-
-app.post('/signout', function(request, response) {
- 
-	if (request.session.loggedin) {
-		// Execute SQL query that'll select the account from the database based on the specified username and password
-		 
-			// if (error) throw error;
-			// If the account exists
-			request.session.loggedin = false;
-			response.redirect("/")
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
-
-
-
-
-//register
-
-
-app.post('/auth3', function(request, response) {
-	// Capture the input fields
-	let username = request.body.username;
-	let password = request.body.password;
-	// Ensure the input fields exists and are not empty
-	if (username && password) {
-		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			// If there is an issue with the query, output the error
-			if (error) throw error;
-			// If the account exists
-			if (results.length > 0) {
-				// Authenticate the user
-				request.session.loggedin = true;
-				request.session.username = username;
-				// Redirect to home page
-				response.redirect('/admindashboard');
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
-});
-
-
 app.post("/booking", function (req, res, next) {
 	
 	inputData = {  
@@ -411,105 +305,6 @@ app.post("/booking", function (req, res, next) {
 	});
   });
 
-
-
-  app.post("/auth2", function (req, res, next) {
-	inputData = {
-	  // first_name: req.body.first_name,
-	  // last_name: req.body.last_name,
-	  username: req.body.username,
-	  password: req.body.password,
-	  email: req.body.email,
-	  // gender: req.body.gender,
-	  // password: req.body.password,
-	  // confirm_password: req.body.confirm_password,
-	};
-
-	inputData2 = {  
-		// first_name: req.body.first_name,
-		// last_name: req.body.last_name,
-		username: req.body.username,
-		email: req.body.email,
-		number: req.body.phno,
-		state: req.body.state,
-		address: req.body.address
-		// gender: req.body.gender,
-		// password: req.body.password,
-		// confirm_password: req.body.confirm_password,
-	  };  
-	// check unique email address
-	var sql = "SELECT * FROM accounts WHERE email =?";
-	connection.query(sql, [inputData.email], function (err, data, fields) {
-	  console.log(msg);
-	  if (err) throw err;
-	  if (data.length > 1) {
-		var ans = inputData.email + "was already exist";
-		// alert(ans);
-	  }
-	  // else if (inputData.confirm_password != inputData.password) {
-	  //   var msg = "Password & Confirm Password is not Matched";
-	  // }
-	  else {
-		// save users data into database
-		var sql = "INSERT INTO accounts SET ?";
-		connection.query(sql, inputData, function (err, data) {
-		  if (err) throw err;
-		  
-		});
-		var sql1 = "INSERT INTO user_profiles SET ?";
-		connection.query(sql1, inputData2, function (err, data) {
-		  if (err) throw err;
-		});
-		var msg = "Your are successfully registered";
-	  }
-	  console.log(msg);
-	  res.sendFile(path.join(__dirname + "/static/login.html"));
-	});
-  });
-
-
-  app.post("/auth4", function (req, res, next) {
-	inputData = {
-	  // first_name: req.body.first_name,
-	  // last_name: req.body.last_name,
-	  username: req.body.username,
-	  password: req.body.password,
-	  email: req.body.email,
-	  // gender: req.body.gender,
-	  // password: req.body.password,
-	  // confirm_password: req.body.confirm_password,
-	};
-	// check unique email address
-	var sql = "SELECT * FROM admin WHERE email =?";
-	connection.query(sql, [inputData.email], function (err, data, fields) {
-	  console.log(msg);
-	  if (err) throw err;
-	  if (data.length > 1) {
-		var ans = inputData.email + "was already exist";
-		// alert(ans);
-	  }
-	  // else if (inputData.confirm_password != inputData.password) {
-	  //   var msg = "Password & Confirm Password is not Matched";
-	  // }
-	  else {
-		// save users data into database
-		var sql = "INSERT INTO admin SET ?";
-		connection.query(sql, inputData, function (err, data) {
-		  if (err) throw err;
-		});
-		var msg = "Your are successfully registered";
-	  }
-	  console.log(msg);
-	  res.sendFile(path.join(__dirname + "/static/home.html"));
-	});
-  });
-
-  //update password
-
-  app.get("/updatepass", function (request, response) {
-	// Render login template
-	response.sendFile(path.join(__dirname + "/static/updatepass.html"));
-  });
   
   app.post("/updation", function (request, response) {
 	// Capture the input fields
@@ -529,13 +324,6 @@ app.post("/booking", function (req, res, next) {
 	});
   });
 
-
-  //my bookings fetching
- 
-//   app.get("/mybooking", function (request, response) {
-// 	// Render login template
-// 	response.render("mybooking");
-//   });
 
   app.get("/mybooking", function (req, res, next) {
 

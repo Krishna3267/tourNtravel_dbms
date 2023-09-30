@@ -36,7 +36,7 @@
                 <a class="nav-link" href="/userprofile">Profile</a>
               </li>
               <li class="nav-item">
-                <form action="/signout" method="post">
+                <form action="/auth/logout" method="post">
                   <button type="submit">LogOut</button>
                 </form>
               </li>
@@ -76,7 +76,7 @@
             <td><%=data.state %></td>
             <td><%=data.phone %></td>
             <td><%=data.amount %></td>
-            <td><a href="/deleteform"><button >Cancel Booking</button></a></td>
+            <td><a href="/form/delete"><button >Cancel Booking</button></a></td>
             <td><a href="#"><button id={i} onclick="send()" >Print Invoice</button></td>
           </tr>
           <% i++; }) %> <% } else{ %>

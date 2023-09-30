@@ -25,7 +25,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            
+          
             <li class="nav-item">
               <a class="nav-link" href="/admindashboard">Places</a>
             </li>
@@ -33,19 +33,22 @@
               <a class="nav-link" href="/allbookings">All Bookings</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/addadmin">Add Admin</a>
+              <a class="nav-link" href="/form/add-admin">Add Admin</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/addtour">Add Tour</a>
+              <a class="nav-link" href="/form/add-tour">Add Tour</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/adminprofile">Profile</a>
             </li>
+
             <li class="nav-item">
-              <form action="/signout" method="post">
+              <form action="/auth/logout" method="post">
                 <button type="submit">LogOut</button>
               </form>
-            </li>  
+            </li>
+          
+            
           </ul>
         </div>
       </div>
@@ -71,9 +74,9 @@
           />
         </div>
         <div>
-          <a href="/updatepass"
+          <a href="/form/update"
             ><button class="btn btn-primary" style="margin-top: 30px">
-              Update Password
+              Update me!
             </button></a
           >
         </div>
