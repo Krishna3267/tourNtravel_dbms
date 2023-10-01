@@ -1,6 +1,6 @@
 const path = require('path');
 const book = (req , res) =>{
-    res.render('form-booking')
+    res.render('form-booking', {TourID : req.body.TourID, userName : req.session.username})
 }
 
 const update_pass = (req , res) =>{
@@ -8,7 +8,7 @@ const update_pass = (req , res) =>{
 }
 
 const delete_booking = (req , res) =>{
-    res.render('form-delete-booking')
+    res.render('form-delete-booking', {TourID : req.body.TourID, userName : req.session.username})
 }
 
 const add_admin = (req , res) =>{

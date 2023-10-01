@@ -18,11 +18,11 @@
 					<!-- font awesome icon -->
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="tourid" placeholder="Tour ID" id="tourid" required>
+				<input type="text" name="tour" value="<%= TourID %>" id="tour" readonly>
 				<label for="name">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="text" name="name" placeholder="Name" id="name" required>
+				<input type="text" name="name" value="<%= userName %>" id="name" readonly>
 
 				<input type="submit" value="Confirm cancelation">
 				<p>Go <a href="/mybooking">back</a></p>

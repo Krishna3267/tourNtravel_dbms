@@ -76,7 +76,12 @@
             <td><%=data.state %></td>
             <td><%=data.phone %></td>
             <td><%=data.amount %></td>
-            <td><a href="/form/delete"><button >Cancel Booking</button></a></td>
+            <td>
+              <form action="/form/delete" method="POST">
+                <input type="hidden" name="TourID" value="<%=data.tourID%>">
+                <button type="submit" class="btn btn-primary">Cancel</button>
+              </form>
+              </td>
             <td><a href="#"><button id={i} onclick="send()" >Print Invoice</button></td>
           </tr>
           <% i++; }) %> <% } else{ %>

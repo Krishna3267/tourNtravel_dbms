@@ -60,7 +60,11 @@
               <li class="list-group-item">Duration: <%=data.duration %></li>
             </ul>
             <div class="card-body">
-              <a href="/form/book" class="btn btn-primary">Book Now</a>
+              <form action="/form/book" method="POST">
+                <input type="hidden" name="TourID" value="<%=data.TourID%>">
+                <button type="submit" class="btn btn-primary">Book now</button>
+              </form>
+              <!-- <a href="/form/book" class="btn btn-primary">Book Now</a> -->
             </div>
           </div>
         </div>
