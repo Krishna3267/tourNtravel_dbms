@@ -45,8 +45,8 @@ app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		// Output username
 		// response.send('Welcome back, ' + request.session.username + '!');
-		response.sendFile(path.join(__dirname + "/static/home.html"));
-
+		// response.sendFile(path.join(__dirname + "/static/home.html"));
+		response.render("user/home", {tile : "home"})
 	} else {
 		// Not logged in
 		response.send('Please login to view this page!');
@@ -68,7 +68,7 @@ app.get("/userinfo", function (request, response) {
 	var sql = `SELECT * FROM user_profiles WHERE username="${req.session.username}"`;
 	connection.query(sql, function (err, data, fields) {
 	  if (err) throw err;
-	  res.render("userprofile", { title: "User List", userData: data });
+	  res.render("user/userprofile", { title: "User List", userData: data });
 	});
   });
 
@@ -76,7 +76,7 @@ app.get("/userinfo", function (request, response) {
 	var sql = `SELECT * FROM admin WHERE username="${req.session.username}"`;
 	connection.query(sql, function (err, data, fields) {
 	  if (err) throw err;
-	  res.render("adminprofile", { title: "User List", userData: data });
+	  res.render("admin/adminprofile", { title: "User List", userData: data });
 	});
   });
 
@@ -92,7 +92,7 @@ app.get('/login-admin' , (req , res) => {
 
 app.post("/delete", function (request, response) {
 	// Capture the input fields
-	let tourid = request.body.tourid;
+	let tourid = request.body.tour;
 	let name = request.body.name;
 	// Ensure the input fields exists and are not empty
   
@@ -130,7 +130,7 @@ app.get('/northplaces', function(request, response) {
 		var sql = `SELECT * FROM tours where category="North"`;
 		connection.query(sql, function (err, data, fields) {
 		if (err) throw err;
-		response.render("northplaces", { title: "User List", userData: data });
+		response.render("places/northplaces", { title: "User List", userData: data });
 		});
 
 	} else {
@@ -149,7 +149,7 @@ app.get('/southplaces', function(request, response) {
 		var sql = `SELECT * FROM tours where category="South"`;
 		connection.query(sql, function (err, data, fields) {
 		if (err) throw err;
-		response.render("southplaces", { title: "User List", userData: data });
+		response.render("places/southplaces", { title: "User List", userData: data });
 		});
 
 	} else {
@@ -167,7 +167,7 @@ app.get('/eastplaces', function(request, response) {
 		var sql = `SELECT * FROM tours where category="East"`;
 		connection.query(sql, function (err, data, fields) {
 		if (err) throw err;
-		response.render("eastplaces", { title: "User List", userData: data });
+		response.render("places/eastplaces", { title: "User List", userData: data });
 		});
 
 	} else {
@@ -185,7 +185,7 @@ app.get('/westplaces', function(request, response) {
 		var sql = `SELECT * FROM tours where category="West"`;
 		connection.query(sql, function (err, data, fields) {
 		if (err) throw err;
-		response.render("westplaces", { title: "User List", userData: data });
+		response.render("places/westplaces", { title: "User List", userData: data });
 		});
 
 	} else {
@@ -204,7 +204,7 @@ app.get('/admindashboard', function(request, response) {
 		var sql = `SELECT * FROM tours`;
 		connection.query(sql, function (err, data, fields) {
 		if (err) throw err;
-		response.render("admindashboard", { title: "User List", userData: data });
+		response.render("admin/admindashboard", { title: "User List", userData: data });
 		});
 
 	} else {
@@ -255,7 +255,7 @@ app.post("/booking", function (req, res, next) {
 		var msg = "Package successfully booked.";
 	  }
 	  console.log(msg);
-	  res.sendFile(path.join(__dirname + "/static/home.html"));
+	  res.redirect("/home");
 	});
   });
 
@@ -335,7 +335,7 @@ app.post("/booking", function (req, res, next) {
 	connection.query(sql, function (err, data, fields) {
 	  if (err) throw err;
 	  console.log(data);
-	  res.render("mybooking", { title: "User List", userData: data });
+	  res.render("user/mybooking", { title: "User List", userData: data });
 
 		 
 	});
@@ -357,7 +357,7 @@ app.post("/booking", function (req, res, next) {
 	connection.query(sql, function (err, data, fields) {
 	  if (err) throw err;
 	  console.log(data);
-	  res.render("allbookings", { title: "User List", userData: data });
+	  res.render("admin/allbookings", { title: "User List", userData: data });
 		 
 	});
 
